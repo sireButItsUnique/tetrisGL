@@ -14,7 +14,7 @@ int main(void) {
 	glfwMakeContextCurrent(window);
 
 	Game *game = new Game();
-	game->initAudio();
+	// game->initAudio();
 
 	// main game loop
 	while (!glfwWindowShouldClose(window)) {
