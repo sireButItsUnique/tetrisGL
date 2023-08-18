@@ -20,10 +20,8 @@
 			"label": "C/C++: g++.exe build active file",
 			"command": "g++",
 			"args": [
-				".\\src\\main.cpp",
-				".\\src\\home.cpp",
-				".\\src\\game.cpp",
-				".\\src\\piece.cpp",
+				".\\src\\*.cpp",	
+				".\\src\\glad.c",
 				"-L.\\lib\\",
 				"-I.\\include\\",
 				"-lglfw3",
