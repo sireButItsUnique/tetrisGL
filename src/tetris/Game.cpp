@@ -50,17 +50,49 @@ void Game::place() {
 	genNextPiece();
 }
 
-void Game::step(){
-
-};
+void Game::step() { move(0, 1); };
 
 // ACTIONS
 void Game::rotate(){
 
 };
 
-void Game::move(int x, int y){
+void Game::move(int x, int y) {
 
+	// simulate movement
+	Piece *shadow = new Piece(*curPiece);
+	shadow->move(x, y);
+
+	// test if collided with bounds or other block
+	bool collided = false;
+	for (std::pair<int, int> block : shadow->getPos()) {
+		if (block.first >= 0 && block.first <= 24) {
+			if (placed[block.second][block.first]) {
+				collided = true;
+				break;
+			}
+		} else {
+			collided = true;
+			break;
+		}
+		if (block.second <= 24) {
+			if (placed[block.second][block.first]) {
+				collided = true;
+				break;
+			}
+		} else {
+			collided = true;
+			break;
+		}
+	}
+
+	if (collided) {
+		if (y) {
+			place();
+		}
+	} else {
+		curPiece->move(x, y);
+	}
 };
 
 void Game::swap() {
