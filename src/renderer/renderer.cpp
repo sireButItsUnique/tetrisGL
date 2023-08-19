@@ -35,8 +35,8 @@ void Renderer::addBlock(int x, int y, int color) {
 	}
 
 	// position: -1 -> 1; 10 by 24
-	float xAdj = 2 / 11.0f;
-	float yAdj = 2 / 25.0f;
+	float xAdj = 2 / 10.0f;
+	float yAdj = 2 / 24.0f;
 
 	// top left triangle
 	vertexes.push_back((x * xAdj) - 1);

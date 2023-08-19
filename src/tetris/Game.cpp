@@ -10,6 +10,9 @@ Game::Game() {
 	renderer->addBlock(4, 0, 5);
 	renderer->addBlock(5, 0, 6);
 	renderer->addBlock(6, 0, 7);
+	renderer->addBlock(7, 0, 7);
+	renderer->addBlock(8, 0, 7);
+	renderer->addBlock(9, 0, 7);
 	renderer->render();
 }
 
