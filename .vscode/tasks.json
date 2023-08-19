@@ -22,7 +22,8 @@
 			"args": [
 				".\\src\\*.cpp",
 				".\\src\\util\\*.cpp",	
-				".\\src\\audio\\*.cpp",		
+				".\\src\\audio\\*.cpp",	
+				".\\src\\renderer\\*.cpp",		
 				".\\src\\glad.c",
 				"-L.\\lib\\",
 				"-I.\\include\\",

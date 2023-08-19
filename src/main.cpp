@@ -1,5 +1,6 @@
 #include "./game.cpp"
 #include "./home.cpp"
+#include <AUDIO/bgm.h>
 #include <GL/glad.h>
 #include <GLFW/glfw3.h>
 #include <GLFW/glfw3native.h>
@@ -17,16 +18,17 @@ int main(void) {
 	// init window
 	glfwInit();
 	GLFWwindow *window;
-	window = glfwCreateWindow(400, 800, "TetrisGL", NULL, NULL);
+	glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
+	window = glfwCreateWindow(400, 960, "TetrisGL", NULL, NULL);
 	glfwMakeContextCurrent(window);
 
 	// init openGL
 	gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
-	glViewport(0, 0, 400, 800);
+	glViewport(0, 0, 400, 960);
 
 	// init game
 	Game *game = new Game();
-	game->initAudio();
+	initAudio();
 
 	// main game loop
 	while (!glfwWindowShouldClose(window)) {
@@ -35,7 +37,7 @@ int main(void) {
 		game->getInput(window);
 
 		// rendering
-		game->render();
+		game->draw();
 
 		// updates window
 		glfwSwapBuffers(window);
