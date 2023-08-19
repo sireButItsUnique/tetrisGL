@@ -3,10 +3,14 @@
 #include <GL/glad.h>
 #include <GLFW/glfw3.h>
 #include <GLFW/glfw3native.h>
+#include <UTIL/LoadShaders.h>
 #include <Windows.h>
+#include <fstream>
 #include <iostream>
+#include <sstream>
 #include <string>
 #include <thread>
+#include <vector>
 
 int main(void) {
 

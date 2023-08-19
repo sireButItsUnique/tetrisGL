@@ -20,7 +20,9 @@
 			"label": "C/C++: g++.exe build active file",
 			"command": "g++",
 			"args": [
-				".\\src\\*.cpp",	
+				".\\src\\*.cpp",
+				".\\src\\util\\*.cpp",	
+				".\\src\\audio\\*.cpp",		
 				".\\src\\glad.c",
 				"-L.\\lib\\",
 				"-I.\\include\\",
