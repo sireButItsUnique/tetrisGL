@@ -5,21 +5,21 @@
 #include <RENDER/Renderer.hpp>
 #include <TETRIS/piece.hpp>
 #include <cstdlib>
+#include <iostream>
 #include <queue>
 #include <time.h>
 #include <vector>
 
 class Game {
   private:
-	std::vector<std::vector<int>> placed =
-		std::vector<std::vector<int>>(24, std::vector<int>(10, 0));
+	std::vector<std::vector<int>> placed;
 	Piece *curPiece;
 	Piece *swapPiece;
 	std::queue<Piece *> next;
 
-	bool swapped = false;
-	bool bgmEnabled = true;
-	bool escDown = false;
+	bool swapped;
+	bool bgmEnabled;
+	bool escDown;
 	Renderer *renderer;
 
   public:
@@ -27,10 +27,14 @@ class Game {
 
 	// BOARD
 	void genNextPiece();
+	void place();
+	void step();
+
+	// ACTIONS
 	void rotate();
+	void instaDrop();
 	void move(int x, int y);
 	void swap();
-	void step();
 
 	// INPUT
 	void getInput(GLFWwindow *window);
@@ -38,4 +42,8 @@ class Game {
 	// VISUAL
 	void render();
 	void draw();
+
+	// DATA
+	void loadGame(std::string savedGame);
+	void newGame();
 };

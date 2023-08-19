@@ -28,6 +28,7 @@ int main(void) {
 
 	// init game
 	Game *game = new Game();
+	game->newGame();
 	initAudio();
 
 	// main game loop

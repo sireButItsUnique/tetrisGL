@@ -3,21 +3,12 @@
 Game::Game() {
 	srand(time(0));
 	renderer = new Renderer();
-	renderer->addBlock(0, 0, 1);
-	renderer->addBlock(1, 0, 2);
-	renderer->addBlock(2, 0, 3);
-	renderer->addBlock(3, 0, 4);
-	renderer->addBlock(4, 0, 5);
-	renderer->addBlock(5, 0, 6);
-	renderer->addBlock(6, 0, 7);
-	renderer->addBlock(7, 0, 7);
-	renderer->addBlock(8, 0, 7);
-	renderer->addBlock(9, 0, 7);
-	renderer->render();
 }
 
 // BOARD
 void Game::genNextPiece() {
+
+	// get random block
 	switch (rand() % 7) {
 	case 1:
 		next.push(new Square());
@@ -41,8 +32,29 @@ void Game::genNextPiece() {
 		next.push(new RightZ());
 		break;
 	}
+
+	// everytime a block is generated allow swap again
+	swapped = false;
 };
 
+void Game::place() {
+
+	// flash block into placed
+	for (auto &block : curPiece->getPos()) {
+		placed[block.second][block.second] = curPiece->getId();
+	}
+
+	// rmv cur block + replace with next
+	curPiece = next.front();
+	next.pop();
+	genNextPiece();
+}
+
+void Game::step(){
+
+};
+
+// ACTIONS
 void Game::rotate(){
 
 };
@@ -51,13 +63,12 @@ void Game::move(int x, int y){
 
 };
 
-void Game::swap(){
-
+void Game::swap() {
+	if (!swapped) {
+		swapped = true;
+	}
 };
 
-void Game::step(){
-
-};
 // INPUT
 void Game::getInput(GLFWwindow *window) {
 
@@ -67,7 +78,6 @@ void Game::getInput(GLFWwindow *window) {
 	}
 	if (escDown && glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_RELEASE) {
 		escDown = false;
-		renderer->clearBlocks();
 		pauseAudio(bgmEnabled);
 	}
 }
@@ -79,16 +89,17 @@ void Game::render() {
 	renderer->clearBlocks();
 
 	// add field blocks
-	for (int row = 0; row <= 24; row++) {
-		for (int col = 0; col <= 10; col++) {
+	for (int row = 0; row < 24; row++) {
+		for (int col = 0; col < 10; col++) {
 			if (placed[row][col]) {
+				std::cout << "added" << std::endl;
 				renderer->addBlock(col, row, placed[row][col]);
 			}
 		}
 	}
 
 	// add cur block
-	for (auto &block : curPiece->getPos()) {
+	for (std::pair<int, int> block : curPiece->getPos()) {
 		renderer->addBlock(block.first, block.second, curPiece->getId());
 	}
 
@@ -103,4 +114,24 @@ void Game::draw() {
 
 	// draw blocks
 	renderer->draw();
+}
+
+// DATA
+void Game::loadGame(std::string savedGame) {}
+
+void Game::newGame() {
+
+	// create empty board
+	placed = std::vector<std::vector<int>>(24, std::vector<int>(10, 0));
+	swapped = false;
+	bgmEnabled = true;
+	escDown = false;
+
+	// init some pieces
+	for (int i = 0; i < 4; i++) {
+		genNextPiece();
+	}
+	curPiece = next.front();
+	next.pop();
+	this->render();
 }
