@@ -1,4 +1,4 @@
-#include <Windows.h>
+#include <AUDIO/bgm.h>
 
 void initAudio() {
 	mciSendStringA(

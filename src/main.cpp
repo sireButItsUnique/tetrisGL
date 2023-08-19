@@ -1,9 +1,9 @@
-#include "./game.cpp"
 #include "./home.cpp"
 #include <AUDIO/bgm.h>
 #include <GL/glad.h>
 #include <GLFW/glfw3.h>
 #include <GLFW/glfw3native.h>
+#include <TETRIS/game.hpp>
 #include <UTIL/LoadShaders.h>
 #include <Windows.h>
 #include <fstream>

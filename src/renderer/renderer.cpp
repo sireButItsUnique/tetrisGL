@@ -1,10 +1,4 @@
-#include <GL/glad.h>
-#include <GLFW/glfw3.h>
-#include <GLFW/glfw3native.h>
 #include <RENDER/Renderer.hpp>
-#include <UTIL/LoadShaders.h>
-#include <iostream>
-#include <vector>
 
 Renderer::Renderer() {
 	// use shader
@@ -52,9 +46,11 @@ void Renderer::addBlock(int x, int y, int color) {
 	vertexes.push_back(0.0f);
 }
 
-void Renderer::rmvLastBlock() {}
+void Renderer::rmvLastBlock() {
+	vertexes.erase(vertexes.end() - 18, vertexes.end());
+}
 
-void Renderer::clearBlocks() {}
+void Renderer::clearBlocks() { vertexes = {}; }
 
 void Renderer::render() {
 	std::cout << vertexes.size() << std::endl;
