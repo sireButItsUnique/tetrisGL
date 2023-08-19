@@ -7,9 +7,12 @@
 
 class Renderer {
   private:
-	unsigned int VBO;
+	unsigned int vVBO;
+	unsigned int cVBO;
 	std::vector<float> vertexes;
+	std::vector<float> colors;
 	GLuint programID;
+	std::vector<std::vector<float>> colorMap;
 
   public:
 	Renderer();
