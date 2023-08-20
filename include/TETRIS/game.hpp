@@ -37,6 +37,7 @@ class Game {
 	void step();
 
 	// ACTIONS
+	void pause();
 	void rotate();
 	void instaDrop();
 	void move(int x, int y);

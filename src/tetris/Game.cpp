@@ -64,6 +64,24 @@ void Game::place() {
 void Game::step() { move(0, 1); };
 
 // ACTIONS
+void Game::pause() {
+
+	// update state
+	paused = !paused;
+
+	// update audio
+	pauseAudio(paused);
+
+	// update visuals
+	if (paused) {
+		renderer->clearBlocks();
+		renderer->clearGhost();
+		renderer->render();
+	} else {
+		render();
+	}
+}
+
 void Game::rotate() {
 
 	// cant simulate movement -> acty do it then rotate it back
@@ -206,16 +224,7 @@ void Game::getInput(GLFWwindow *window) {
 	}
 	if (escDown && glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_RELEASE) {
 		escDown = false;
-		pauseAudio(!paused);
-
-		// scuffed pause/unpause
-		paused = !paused;
-		if (paused) {
-			renderer->clearBlocks();
-			renderer->render();
-		} else {
-			render();
-		}
+		pause();
 	}
 
 	// DOWN: move down
@@ -359,10 +368,7 @@ void Game::newGame() {
 
 	// init some pieces
 	for (int i = 0; i < 4; i++) {
-		next.push(new Line());
-		next.push(new LeftL());
-		next.push(new T());
-		// genNextPiece();
+		genNextPiece();
 	}
 	curPiece = next.front();
 	next.pop();
