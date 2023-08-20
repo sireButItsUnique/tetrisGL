@@ -18,8 +18,14 @@ class Game {
 	std::queue<Piece *> next;
 
 	bool swapped;
-	bool bgmEnabled;
+	bool paused;
 	bool escDown;
+	bool leftDown;
+	bool rightDown;
+	bool upDown;
+	bool downDown;
+	bool cDown;
+	bool spaceDown;
 	Renderer *renderer;
 
   public:

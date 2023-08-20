@@ -1,4 +1,4 @@
 #include <Windows.h>
 void initAudio();
 
-void pauseAudio(bool &bgmEnabled);
+void pauseAudio(bool bgmEnabled);

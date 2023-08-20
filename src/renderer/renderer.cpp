@@ -76,7 +76,6 @@ void Renderer::clearBlocks() {
 }
 
 void Renderer::render() {
-	std::cout << vertexes.size() << std::endl;
 
 	// vertexes
 	float *v = &vertexes[0];

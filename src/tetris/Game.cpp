@@ -40,14 +40,24 @@ void Game::genNextPiece() {
 void Game::place() {
 
 	// flash block into placed
-	for (auto &block : curPiece->getPos()) {
-		placed[block.second][block.second] = curPiece->getId();
+	for (std::pair<int, int> block : curPiece->getPos()) {
+		placed[block.second][block.first] = curPiece->getId();
 	}
 
 	// rmv cur block + replace with next
 	curPiece = next.front();
 	next.pop();
 	genNextPiece();
+
+	// render new block
+	for (std::pair<int, int> block : curPiece->getPos()) {
+		if (placed[block.second][block.first]) {
+			std::cout << "bro u suck ass" << std::endl;
+		}
+		renderer->addBlock(block.first, block.second, curPiece->getId());
+	}
+
+	renderer->render();
 }
 
 void Game::step() { move(0, 1); };
@@ -90,9 +100,22 @@ void Game::move(int x, int y) {
 		if (y) {
 			place();
 		}
+		return;
 	} else {
 		curPiece->move(x, y);
 	}
+
+	// render the move
+	for (int i = 0; i < 4; i++) {
+		renderer->rmvLastBlock();
+	}
+
+	// add cur block
+	for (std::pair<int, int> block : curPiece->getPos()) {
+		renderer->addBlock(block.first, block.second, curPiece->getId());
+	}
+
+	renderer->render();
 };
 
 void Game::swap() {
@@ -110,7 +133,56 @@ void Game::getInput(GLFWwindow *window) {
 	}
 	if (escDown && glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_RELEASE) {
 		escDown = false;
-		pauseAudio(bgmEnabled);
+		pauseAudio(!paused);
+
+		// scuffed pause/unpause
+		paused = !paused;
+		if (paused) {
+			renderer->clearBlocks();
+			renderer->render();
+		} else {
+			render();
+		}
+	}
+
+	// DOWN: move down
+	if (glfwGetKey(window, GLFW_KEY_PAGE_DOWN) == GLFW_PRESS ||
+		glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
+		downDown = true;
+	}
+	if (downDown && (glfwGetKey(window, GLFW_KEY_PAGE_DOWN) == GLFW_RELEASE ||
+					 glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_RELEASE)) {
+		downDown = false;
+		move(0, 1);
+	}
+
+	// UP: rotate
+	if (glfwGetKey(window, GLFW_KEY_PAGE_UP) == GLFW_PRESS ||
+		glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
+		upDown = true;
+	}
+	if (upDown && (glfwGetKey(window, GLFW_KEY_PAGE_UP) == GLFW_RELEASE ||
+				   glfwGetKey(window, GLFW_KEY_UP) == GLFW_RELEASE)) {
+		upDown = false;
+		rotate();
+	}
+
+	// LEFT: move left
+	if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) {
+		leftDown = true;
+	}
+	if (leftDown && glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_RELEASE) {
+		leftDown = false;
+		move(-1, 0);
+	}
+
+	// LEFT: move right
+	if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) {
+		rightDown = true;
+	}
+	if (rightDown && glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_RELEASE) {
+		rightDown = false;
+		move(1, 0);
 	}
 }
 
@@ -124,7 +196,6 @@ void Game::render() {
 	for (int row = 0; row < 24; row++) {
 		for (int col = 0; col < 10; col++) {
 			if (placed[row][col]) {
-				std::cout << "added" << std::endl;
 				renderer->addBlock(col, row, placed[row][col]);
 			}
 		}
@@ -156,8 +227,15 @@ void Game::newGame() {
 	// create empty board
 	placed = std::vector<std::vector<int>>(24, std::vector<int>(10, 0));
 	swapped = false;
-	bgmEnabled = true;
+
+	// set all keys to false
+	paused = false;
 	escDown = false;
+	leftDown = false;
+	rightDown = false;
+	downDown = false;
+	cDown = false;
+	spaceDown = false;
 
 	// init some pieces
 	for (int i = 0; i < 4; i++) {

@@ -8,7 +8,7 @@ void initAudio() {
 	mciSendStringA("play bgm repeat", NULL, 0, NULL);
 }
 
-void pauseAudio(bool &bgmEnabled) {
+void pauseAudio(bool bgmEnabled) {
 	if (bgmEnabled) {
 		mciSendStringA("pause bgm", NULL, 0, NULL);
 	} else {

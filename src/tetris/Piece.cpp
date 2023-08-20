@@ -4,7 +4,7 @@
 void Piece::move(int x, int y) {
 	for (std::pair<int, int> &block : pos) {
 		block.first += x;
-		block.first += y;
+		block.second += y;
 	}
 }
 
