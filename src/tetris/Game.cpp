@@ -63,8 +63,46 @@ void Game::place() {
 void Game::step() { move(0, 1); };
 
 // ACTIONS
-void Game::rotate(){
+void Game::rotate() {
 
+	// cant simulate movement -> acty do it then rotate it back
+	curPiece->rotate();
+
+	// test if collided with bounds or other block
+	bool collided = false;
+	for (std::pair<int, int> block : curPiece->getPos()) {
+		std::cout << "row " << block.second << ", col " << block.first
+				  << std::endl;
+		if (block.first >= 0 && block.first <= 9 && block.second >= 0 &&
+			block.second <= 23) {
+			if (placed[block.second][block.first]) {
+				collided = true;
+				break;
+			}
+		} else {
+			collided = true;
+			break;
+		}
+	}
+
+	if (collided) {
+		curPiece->rotate();
+		curPiece->rotate();
+		curPiece->rotate();
+		return;
+	}
+
+	// render the rotation
+	for (int i = 0; i < 4; i++) {
+		renderer->rmvLastBlock();
+	}
+
+	// add cur block
+	for (std::pair<int, int> block : curPiece->getPos()) {
+		renderer->addBlock(block.first, block.second, curPiece->getId());
+	}
+
+	renderer->render();
 };
 
 void Game::move(int x, int y) {
@@ -76,16 +114,8 @@ void Game::move(int x, int y) {
 	// test if collided with bounds or other block
 	bool collided = false;
 	for (std::pair<int, int> block : shadow->getPos()) {
-		if (block.first >= 0 && block.first <= 24) {
-			if (placed[block.second][block.first]) {
-				collided = true;
-				break;
-			}
-		} else {
-			collided = true;
-			break;
-		}
-		if (block.second <= 24) {
+		if (block.first >= 0 && block.first <= 9 && block.second >= 0 &&
+			block.second <= 23) {
 			if (placed[block.second][block.first]) {
 				collided = true;
 				break;
@@ -124,6 +154,48 @@ void Game::swap() {
 	}
 };
 
+void Game::instaDrop() {
+	while (true) {
+		// simulate movement
+		Piece *shadow = new Piece(*curPiece);
+		shadow->move(0, 1);
+
+		// test if collided with bounds or other block
+		bool collided = false;
+		for (std::pair<int, int> block : shadow->getPos()) {
+			if (block.first >= 0 && block.first <= 9 && block.second >= 0 &&
+				block.second <= 23) {
+				if (placed[block.second][block.first]) {
+					collided = true;
+					break;
+				}
+			} else {
+				collided = true;
+				break;
+			}
+		}
+
+		// has collided -> render the placed piece at its new pos
+		if (collided) {
+			// render the move
+			for (int i = 0; i < 4; i++) {
+				renderer->rmvLastBlock();
+			}
+
+			// add cur block
+			for (std::pair<int, int> block : curPiece->getPos()) {
+				renderer->addBlock(block.first, block.second,
+								   curPiece->getId());
+			}
+
+			renderer->render();
+			place();
+			return;
+		}
+		curPiece = shadow;
+	}
+}
+
 // INPUT
 void Game::getInput(GLFWwindow *window) {
 
@@ -146,23 +218,19 @@ void Game::getInput(GLFWwindow *window) {
 	}
 
 	// DOWN: move down
-	if (glfwGetKey(window, GLFW_KEY_PAGE_DOWN) == GLFW_PRESS ||
-		glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
+	if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
 		downDown = true;
 	}
-	if (downDown && (glfwGetKey(window, GLFW_KEY_PAGE_DOWN) == GLFW_RELEASE ||
-					 glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_RELEASE)) {
+	if (downDown && (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_RELEASE)) {
 		downDown = false;
 		move(0, 1);
 	}
 
 	// UP: rotate
-	if (glfwGetKey(window, GLFW_KEY_PAGE_UP) == GLFW_PRESS ||
-		glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
+	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
 		upDown = true;
 	}
-	if (upDown && (glfwGetKey(window, GLFW_KEY_PAGE_UP) == GLFW_RELEASE ||
-				   glfwGetKey(window, GLFW_KEY_UP) == GLFW_RELEASE)) {
+	if (upDown && (glfwGetKey(window, GLFW_KEY_UP) == GLFW_RELEASE)) {
 		upDown = false;
 		rotate();
 	}
@@ -176,13 +244,22 @@ void Game::getInput(GLFWwindow *window) {
 		move(-1, 0);
 	}
 
-	// LEFT: move right
+	// RIGHT: move right
 	if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) {
 		rightDown = true;
 	}
 	if (rightDown && glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_RELEASE) {
 		rightDown = false;
 		move(1, 0);
+	}
+
+	// SPACE: insta drop
+	if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) {
+		spaceDown = true;
+	}
+	if (spaceDown && glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_RELEASE) {
+		spaceDown = false;
+		instaDrop();
 	}
 }
 
@@ -239,7 +316,10 @@ void Game::newGame() {
 
 	// init some pieces
 	for (int i = 0; i < 4; i++) {
-		genNextPiece();
+		next.push(new Line());
+		next.push(new LeftL());
+		next.push(new T());
+		// genNextPiece();
 	}
 	curPiece = next.front();
 	next.pop();

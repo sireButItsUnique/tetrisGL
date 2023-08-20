@@ -8,11 +8,11 @@ void Piece::move(int x, int y) {
 	}
 }
 
-void Piece::rotate() {}
-
 int Piece::getId() { return id; }
 
 std::vector<std::pair<int, int>> Piece::getPos() { return pos; }
+
+void Piece::rotate() {}
 
 // Construstors
 Square::Square() {
@@ -81,7 +81,30 @@ RightZ::RightZ() {
 // Rotation
 void Square::rotate() {}
 
-void T::rotate() {}
+void T::rotate() {
+
+	// inc rotation id
+	rotation++;
+	rotation %= 4;
+
+	// acty rotate
+	switch (rotation) {
+	case 0:
+		pos[0] = {pos[2].first, pos[2].second - 1};
+		pos[1] = {pos[2].first - 1, pos[2].second};
+		pos[3] = {pos[2].first + 1, pos[2].second};
+		break;
+	case 1:
+		pos[1] = {pos[2].first, pos[2].second + 1};
+		break;
+	case 2:
+		pos[0] = {pos[2].first - 1, pos[2].second};
+		break;
+	case 3:
+		pos[3] = {pos[2].first, pos[2].second - 1};
+		break;
+	}
+}
 
 void Line::rotate() {}
 
