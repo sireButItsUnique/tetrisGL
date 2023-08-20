@@ -47,6 +47,7 @@ class Game {
 
 	// VISUAL
 	void render();
+	void renderGhost();
 	void draw();
 
 	// DATA

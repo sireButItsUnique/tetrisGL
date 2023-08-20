@@ -57,6 +57,7 @@ void Game::place() {
 		renderer->addBlock(block.first, block.second, curPiece->getId());
 	}
 
+	renderGhost();
 	renderer->render();
 }
 
@@ -71,8 +72,6 @@ void Game::rotate() {
 	// test if collided with bounds or other block
 	bool collided = false;
 	for (std::pair<int, int> block : curPiece->getPos()) {
-		std::cout << "row " << block.second << ", col " << block.first
-				  << std::endl;
 		if (block.first >= 0 && block.first <= 9 && block.second >= 0 &&
 			block.second <= 23) {
 			if (placed[block.second][block.first]) {
@@ -102,6 +101,7 @@ void Game::rotate() {
 		renderer->addBlock(block.first, block.second, curPiece->getId());
 	}
 
+	renderGhost();
 	renderer->render();
 };
 
@@ -145,6 +145,7 @@ void Game::move(int x, int y) {
 		renderer->addBlock(block.first, block.second, curPiece->getId());
 	}
 
+	renderGhost();
 	renderer->render();
 };
 
@@ -264,6 +265,47 @@ void Game::getInput(GLFWwindow *window) {
 }
 
 // VISUAL
+void Game::renderGhost() {
+
+	// delete old ghost
+	renderer->clearGhost();
+
+	// simulate insta drop
+	Piece *shadow = new Piece(*curPiece);
+	while (true) {
+		shadow->move(0, 1);
+
+		// test if collided with bounds or other block
+		bool collided = false;
+		for (std::pair<int, int> block : shadow->getPos()) {
+			if (block.first >= 0 && block.first <= 9 && block.second >= 0 &&
+				block.second <= 23) {
+				if (placed[block.second][block.first]) {
+					collided = true;
+					break;
+				}
+			} else {
+				collided = true;
+				break;
+			}
+		}
+
+		// has collided -> render the placed piece at its new pos
+		if (collided) {
+
+			// render the ghost
+			shadow->move(0, -1);
+			for (std::pair<int, int> block : shadow->getPos()) {
+				renderer->addGhostBlock(block.first, block.second,
+										shadow->getId());
+			}
+
+			renderer->render();
+			return;
+		}
+	}
+}
+
 void Game::render() {
 
 	// clear field
@@ -283,6 +325,7 @@ void Game::render() {
 		renderer->addBlock(block.first, block.second, curPiece->getId());
 	}
 
+	renderGhost();
 	renderer->render();
 }
 

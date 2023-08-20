@@ -23,6 +23,8 @@ Renderer::Renderer() {
 	// gen buffers + link to vbo
 	glGenBuffers(1, &vVBO);
 	glGenBuffers(1, &cVBO);
+	glGenBuffers(1, &ghostvVBO);
+	glGenBuffers(1, &ghostcVBO);
 }
 
 void Renderer::addBlock(int x, int y, int color) {
@@ -86,9 +88,33 @@ void Renderer::render() {
 	v = &colors[0];
 	glBindBuffer(GL_ARRAY_BUFFER, cVBO);
 	glBufferData(GL_ARRAY_BUFFER, 4 * colors.size(), v, GL_STATIC_DRAW);
+
+	// ghost
+	v = &ghostVertexes[0];
+	glBindBuffer(GL_ARRAY_BUFFER, ghostvVBO);
+	glBufferData(GL_ARRAY_BUFFER, 4 * ghostVertexes.size(), v, GL_STATIC_DRAW);
+
+	v = &ghostColors[0];
+	glBindBuffer(GL_ARRAY_BUFFER, ghostcVBO);
+	glBufferData(GL_ARRAY_BUFFER, 4 * ghostColors.size(), v, GL_STATIC_DRAW);
 }
 
 void Renderer::draw() {
+
+	// draw ghost beneath
+	glEnableVertexAttribArray(0); // note 0 is accessed in shaders
+	glBindBuffer(GL_ARRAY_BUFFER, ghostvVBO);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void *)0);
+
+	// 2nd attribute buffer : colors
+	glEnableVertexAttribArray(1); // note 1 is accessed in shaders
+	glBindBuffer(GL_ARRAY_BUFFER, ghostcVBO);
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, (void *)0);
+
+	// draw all triangles
+	glDrawArrays(GL_TRIANGLES, 0, ghostVertexes.size());
+	glDisableVertexAttribArray(0);
+	glDisableVertexAttribArray(1);
 
 	// 1st attribute buffer : vertices
 	glEnableVertexAttribArray(0); // note 0 is accessed in shaders
@@ -103,4 +129,5 @@ void Renderer::draw() {
 	// draw all triangles
 	glDrawArrays(GL_TRIANGLES, 0, vertexes.size());
 	glDisableVertexAttribArray(0);
+	glDisableVertexAttribArray(1);
 }
