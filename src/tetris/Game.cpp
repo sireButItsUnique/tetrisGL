@@ -10,25 +10,25 @@ void Game::genNextPiece() {
 
 	// get random block
 	switch (rand() % 7) {
-	case 1:
+	case 0:
 		next.push(new Square());
 		break;
-	case 2:
+	case 1:
 		next.push(new T());
 		break;
-	case 3:
+	case 2:
 		next.push(new Line());
 		break;
-	case 4:
+	case 3:
 		next.push(new LeftL());
 		break;
-	case 5:
+	case 4:
 		next.push(new RightL());
 		break;
-	case 6:
+	case 5:
 		next.push(new LeftZ());
 		break;
-	case 7:
+	case 6:
 		next.push(new RightZ());
 		break;
 	}

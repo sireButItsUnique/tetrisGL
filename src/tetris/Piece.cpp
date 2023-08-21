@@ -82,7 +82,6 @@ RightZ::RightZ() {
 void Square::rotate() {}
 
 void T::rotate() {
-
 	// inc rotation id
 	rotation++;
 	rotation %= 4;
@@ -106,9 +105,65 @@ void T::rotate() {
 	}
 }
 
-void Line::rotate() {}
+void Line::rotate() {
+	// inc rotation id
+	rotation++;
+	rotation %= 4;
 
-void LeftL::rotate() {}
+	// acty rotate
+	switch (rotation) {
+	case 0:
+		pos[0] = {pos[1].first - 1, pos[1].second};
+		pos[2] = {pos[1].first + 1, pos[1].second};
+		pos[3] = {pos[1].first + 2, pos[1].second};
+		break;
+	case 1:
+		pos[0] = {pos[2].first, pos[2].second - 1};
+		pos[1] = {pos[2].first, pos[2].second + 1};
+		pos[3] = {pos[2].first, pos[2].second + 2};
+		break;
+	case 2:
+		pos[0] = {pos[1].first + 1, pos[1].second};
+		pos[2] = {pos[1].first - 1, pos[1].second};
+		pos[3] = {pos[1].first - 2, pos[1].second};
+		break;
+	case 3:
+		pos[0] = {pos[2].first, pos[2].second + 1};
+		pos[1] = {pos[2].first, pos[2].second - 1};
+		pos[3] = {pos[2].first, pos[2].second - 2};
+		break;
+	}
+}
+
+void LeftL::rotate() {
+	// inc rotation id
+	rotation++;
+	rotation %= 4;
+
+	// acty rotate
+	switch (rotation) {
+	case 0:
+		pos[0] = {pos[2].first - 1, pos[2].second};
+		pos[1] = {pos[2].first + 1, pos[2].second};
+		pos[3] = {pos[2].first - 1, pos[2].second - 1};
+		break;
+	case 1:
+		pos[0] = {pos[2].first, pos[2].second - 1};
+		pos[1] = {pos[2].first, pos[2].second + 1};
+		pos[3] = {pos[2].first + 1, pos[2].second - 1};
+		break;
+	case 2:
+		pos[0] = {pos[2].first - 1, pos[2].second};
+		pos[1] = {pos[2].first + 1, pos[2].second};
+		pos[3] = {pos[2].first + 1, pos[2].second + 1};
+		break;
+	case 3:
+		pos[0] = {pos[2].first, pos[2].second + 1};
+		pos[1] = {pos[2].first, pos[2].second - 1};
+		pos[3] = {pos[2].first - 1, pos[2].second + 1};
+		break;
+	}
+}
 
 void RightL::rotate() {}
 
