@@ -4,9 +4,10 @@
 #include <GLFW/glfw3native.h>
 #include <RENDER/Renderer.hpp>
 #include <TETRIS/piece.hpp>
-#include <cstdlib>
+#include <algorithm>
 #include <iostream>
 #include <queue>
+#include <random>
 #include <time.h>
 #include <vector>
 
@@ -32,7 +33,7 @@ class Game {
 	Game();
 
 	// BOARD
-	void genNextPiece();
+	void genNextPieceSet();
 	void place();
 	void step();
 	void clearLine(int row);

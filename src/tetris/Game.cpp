@@ -6,35 +6,16 @@ Game::Game() {
 }
 
 // BOARD
-void Game::genNextPiece() {
+void Game::genNextPieceSet() {
 
-	// get random block
-	switch (rand() % 7) {
-	case 0:
-		next.push(new Square());
-		break;
-	case 1:
-		next.push(new T());
-		break;
-	case 2:
-		next.push(new Line());
-		break;
-	case 3:
-		next.push(new LeftL());
-		break;
-	case 4:
-		next.push(new RightL());
-		break;
-	case 5:
-		next.push(new LeftZ());
-		break;
-	case 6:
-		next.push(new RightZ());
-		break;
+	// create set with every piece then shuffle
+	std::vector<Piece *> set = {new Square(), new T(),		new Line(),
+								new LeftL(),  new RightL(), new LeftZ(),
+								new RightZ()};
+	std::shuffle(set.begin(), set.end(), std::default_random_engine(time(0)));
+	for (int i = 0; i < 7; i++) {
+		next.push(set[i]);
 	}
-
-	// everytime a block is generated allow swap again
-	swapped = false;
 };
 
 void Game::place() {
@@ -61,10 +42,15 @@ void Game::place() {
 		}
 	}
 
+	// allow new block to be swapped
+	swapped = false;
+
 	// rmv cur block + replace with next
 	curPiece = next.front();
 	next.pop();
-	genNextPiece();
+	if (next.size() <= 7) {
+		genNextPieceSet();
+	}
 
 	// render new block
 	for (std::pair<int, int> block : curPiece->getPos()) {
@@ -392,7 +378,7 @@ void Game::newGame() {
 
 	// init some pieces
 	for (int i = 0; i < 4; i++) {
-		genNextPiece();
+		genNextPieceSet();
 	}
 	curPiece = next.front();
 	next.pop();
