@@ -35,6 +35,7 @@ class Game {
 	void genNextPiece();
 	void place();
 	void step();
+	void clearLine(int row);
 
 	// ACTIONS
 	void pause();

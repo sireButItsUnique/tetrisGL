@@ -44,6 +44,23 @@ void Game::place() {
 		placed[block.second][block.first] = curPiece->getId();
 	}
 
+	// clear new line
+	for (int row = 23; row >= 0; row--) {
+
+		bool missing = false;
+		for (int col = 0; col < 10; col++) {
+			if (!placed[row][col]) {
+				missing = true;
+				break;
+			}
+		}
+
+		if (!missing) {
+			clearLine(row);
+			row++;
+		}
+	}
+
 	// rmv cur block + replace with next
 	curPiece = next.front();
 	next.pop();
@@ -58,10 +75,17 @@ void Game::place() {
 	}
 
 	renderGhost();
-	renderer->render();
+	render();
 }
 
 void Game::step() { move(0, 1); };
+
+void Game::clearLine(int row) {
+	for (int r = row; r >= 1; r--) {
+		placed[r] = placed[r - 1];
+	}
+	placed[0] = {};
+}
 
 // ACTIONS
 void Game::pause() {
