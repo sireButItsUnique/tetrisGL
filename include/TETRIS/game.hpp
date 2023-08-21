@@ -5,6 +5,7 @@
 #include <RENDER/Renderer.hpp>
 #include <TETRIS/piece.hpp>
 #include <algorithm>
+#include <chrono>
 #include <iostream>
 #include <queue>
 #include <random>
@@ -17,6 +18,7 @@ class Game {
 	Piece *curPiece;
 	Piece *swapPiece;
 	std::queue<Piece *> next;
+	std::chrono::high_resolution_clock::time_point lastTick;
 
 	bool swapped;
 	bool paused;
@@ -37,6 +39,7 @@ class Game {
 	void place();
 	void step();
 	void clearLine(int row);
+	void tick();
 
 	// ACTIONS
 	void pause();

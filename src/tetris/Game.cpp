@@ -73,6 +73,17 @@ void Game::clearLine(int row) {
 	placed[0] = {};
 }
 
+void Game::tick() {
+	if (!paused) {
+		auto diff = std::chrono::duration_cast<std::chrono::milliseconds>(
+			std::chrono::high_resolution_clock::now() - lastTick);
+		if (diff.count() >= 1000) {
+			step();
+			lastTick = std::chrono::high_resolution_clock::now();
+		}
+	}
+}
+
 // ACTIONS
 void Game::pause() {
 
@@ -365,6 +376,7 @@ void Game::newGame() {
 
 	// create empty board
 	placed = std::vector<std::vector<int>>(24, std::vector<int>(10, 0));
+	lastTick = std::chrono::high_resolution_clock::now();
 	swapped = false;
 
 	// set all keys to false

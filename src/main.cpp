@@ -34,6 +34,9 @@ int main(void) {
 	// main game loop
 	while (!glfwWindowShouldClose(window)) {
 
+		// tick game
+		game->tick();
+
 		// input
 		game->getInput(window);
 
