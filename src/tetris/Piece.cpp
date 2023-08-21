@@ -36,10 +36,10 @@ T::T() {
 Line::Line() {
 	id = 3;
 	pos.resize(4);
-	pos[0] = {3, 0};
-	pos[1] = {4, 0};
-	pos[2] = {5, 0};
-	pos[3] = {6, 0};
+	pos[0] = {3, 1};
+	pos[1] = {4, 1};
+	pos[2] = {5, 1};
+	pos[3] = {6, 1};
 }
 
 LeftL::LeftL() {
@@ -165,8 +165,92 @@ void LeftL::rotate() {
 	}
 }
 
-void RightL::rotate() {}
+void RightL::rotate() {
+	// inc rotation id
+	rotation++;
+	rotation %= 4;
 
-void LeftZ::rotate() {}
+	// acty rotate
+	switch (rotation) {
+	case 0:
+		pos[0] = {pos[2].first - 1, pos[2].second};
+		pos[1] = {pos[2].first + 1, pos[2].second};
+		pos[3] = {pos[2].first + 1, pos[2].second - 1};
+		break;
+	case 1:
+		pos[0] = {pos[2].first, pos[2].second - 1};
+		pos[1] = {pos[2].first, pos[2].second + 1};
+		pos[3] = {pos[2].first + 1, pos[2].second + 1};
+		break;
+	case 2:
+		pos[0] = {pos[2].first - 1, pos[2].second};
+		pos[1] = {pos[2].first + 1, pos[2].second};
+		pos[3] = {pos[2].first - 1, pos[2].second + 1};
+		break;
+	case 3:
+		pos[0] = {pos[2].first, pos[2].second + 1};
+		pos[1] = {pos[2].first, pos[2].second - 1};
+		pos[3] = {pos[2].first - 1, pos[2].second - 1};
+		break;
+	}
+}
 
-void RightZ::rotate() {}
+void LeftZ::rotate() { // red
+	// inc rotation id
+	rotation++;
+	rotation %= 4;
+
+	// acty rotate
+	switch (rotation) {
+	case 0:
+		pos[0] = {pos[2].first + 1, pos[2].second};
+		pos[1] = {pos[2].first, pos[2].second - 1};
+		pos[3] = {pos[2].first - 1, pos[2].second - 1};
+		break;
+	case 1:
+		pos[0] = {pos[2].first, pos[2].second + 1};
+		pos[1] = {pos[2].first + 1, pos[2].second};
+		pos[3] = {pos[2].first + 1, pos[2].second - 1};
+		break;
+	case 2:
+		pos[0] = {pos[2].first - 1, pos[2].second};
+		pos[1] = {pos[2].first + 1, pos[2].second + 1};
+		pos[3] = {pos[2].first, pos[2].second + 1};
+		break;
+	case 3:
+		pos[0] = {pos[2].first, pos[2].second - 1};
+		pos[1] = {pos[2].first - 1, pos[2].second};
+		pos[3] = {pos[2].first - 1, pos[2].second + 1};
+		break;
+	}
+}
+
+void RightZ::rotate() { // green
+	// inc rotation id
+	rotation++;
+	rotation %= 4;
+
+	// acty rotate
+	switch (rotation) {
+	case 0:
+		pos[0] = {pos[2].first - 1, pos[2].second};
+		pos[1] = {pos[2].first, pos[2].second - 1};
+		pos[3] = {pos[2].first + 1, pos[2].second - 1};
+		break;
+	case 1:
+		pos[0] = {pos[2].first, pos[2].second - 1};
+		pos[1] = {pos[2].first + 1, pos[2].second};
+		pos[3] = {pos[2].first + 1, pos[2].second + 1};
+		break;
+	case 2:
+		pos[0] = {pos[2].first + 1, pos[2].second};
+		pos[1] = {pos[2].first - 1, pos[2].second + 1};
+		pos[3] = {pos[2].first, pos[2].second + 1};
+		break;
+	case 3:
+		pos[0] = {pos[2].first, pos[2].second + 1};
+		pos[1] = {pos[2].first - 1, pos[2].second};
+		pos[3] = {pos[2].first - 1, pos[2].second - 1};
+		break;
+	}
+}
