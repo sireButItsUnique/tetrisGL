@@ -204,6 +204,9 @@ void Game::swap() {
 			swapPiece = buffer;
 		}
 
+		// reset swap piece to initial position
+		swapPiece->reset();
+
 		// render it
 		render();
 		swapped = true;

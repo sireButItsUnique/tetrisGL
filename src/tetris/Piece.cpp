@@ -14,6 +14,8 @@ std::vector<std::pair<int, int>> Piece::getPos() { return pos; }
 
 void Piece::rotate() {}
 
+void Piece::reset() {}
+
 // Construstors
 Square::Square() {
 	id = 1;
@@ -253,4 +255,61 @@ void RightZ::rotate() { // green
 		pos[3] = {pos[2].first - 1, pos[2].second - 1};
 		break;
 	}
+}
+
+// Reset
+void Square::reset() {
+	rotation = 0;
+	pos[0] = {4, 0};
+	pos[1] = {5, 0};
+	pos[2] = {4, 1};
+	pos[3] = {5, 1};
+}
+
+void T::reset() {
+	rotation = 0;
+	pos[0] = {4, 0};
+	pos[1] = {3, 1};
+	pos[2] = {4, 1};
+	pos[3] = {5, 1};
+}
+
+void Line::reset() {
+	rotation = 0;
+	pos[0] = {3, 1};
+	pos[1] = {4, 1};
+	pos[2] = {5, 1};
+	pos[3] = {6, 1};
+}
+
+void LeftL::reset() {
+	rotation = 0;
+	pos[0] = {3, 0};
+	pos[1] = {3, 1};
+	pos[2] = {4, 1};
+	pos[3] = {5, 1};
+}
+
+void RightL::reset() {
+	rotation = 0;
+	pos[0] = {5, 0};
+	pos[1] = {3, 1};
+	pos[2] = {4, 1};
+	pos[3] = {5, 1};
+}
+
+void LeftZ::reset() {
+	rotation = 0;
+	pos[0] = {4, 0};
+	pos[1] = {5, 0};
+	pos[2] = {5, 1};
+	pos[3] = {6, 1};
+}
+
+void RightZ::reset() {
+	rotation = 0;
+	pos[0] = {4, 0};
+	pos[1] = {5, 0};
+	pos[2] = {4, 1};
+	pos[3] = {3, 1};
 }
