@@ -1,6 +1,7 @@
 #include <RENDER/Renderer.hpp>
 
 void Renderer::renderBorders() {
+	noBorders = false;
 
 	// get verticies
 	float nextXBeg = 0.95;

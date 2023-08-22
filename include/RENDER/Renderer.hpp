@@ -22,6 +22,9 @@ class Renderer {
 	std::vector<float> colors;
 	GLuint programID;
 	std::vector<std::vector<float>> colorMap;
+	bool noSwap;
+	bool noGhost;
+	bool noBorders;
 
   public:
 	Renderer();
@@ -43,6 +46,8 @@ class Renderer {
 	void renderBorders();
 
 	void render();
+
+	void clear();
 
 	void draw();
 };

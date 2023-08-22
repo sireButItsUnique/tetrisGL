@@ -12,6 +12,11 @@ Renderer::Renderer() {
 	colorMap[6] = {1.00, 0.20, 0.07};
 	colorMap[7] = {0.45, 0.80, 0.23};
 
+	// init showing
+	noSwap = true;
+	noBorders = false;
+	noGhost = false;
+
 	// use shader
 	programID = LoadShaders(
 		"D:\\robert2021\\projects\\tetrisGL\\src\\assets\\vertexShaders."
@@ -25,6 +30,10 @@ Renderer::Renderer() {
 	glGenBuffers(1, &cVBO);
 	glGenBuffers(1, &ghostvVBO);
 	glGenBuffers(1, &ghostcVBO);
+	glGenBuffers(1, &bordervVBO);
+	glGenBuffers(1, &bordercVBO);
+	glGenBuffers(1, &swapvVBO);
+	glGenBuffers(1, &swapcVBO);
 }
 
 void Renderer::addBlock(int x, int y, int color) {
@@ -91,6 +100,33 @@ void Renderer::render() {
 	glBufferData(GL_ARRAY_BUFFER, 4 * colors.size(), v, GL_STATIC_DRAW);
 }
 
+void Renderer::clear() {
+	float *v = {};
+	noGhost = true;
+	noBorders = true;
+	noSwap = true;
+
+	// vertexes
+	glBindBuffer(GL_ARRAY_BUFFER, vVBO);
+	glBufferData(GL_ARRAY_BUFFER, 0, v, GL_STATIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, ghostvVBO);
+	glBufferData(GL_ARRAY_BUFFER, 0, v, GL_STATIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, swapvVBO);
+	glBufferData(GL_ARRAY_BUFFER, 0, v, GL_STATIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, bordervVBO);
+	glBufferData(GL_ARRAY_BUFFER, 0, v, GL_STATIC_DRAW);
+
+	// colors
+	glBindBuffer(GL_ARRAY_BUFFER, cVBO);
+	glBufferData(GL_ARRAY_BUFFER, 0, v, GL_STATIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, ghostcVBO);
+	glBufferData(GL_ARRAY_BUFFER, 0, v, GL_STATIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, swapcVBO);
+	glBufferData(GL_ARRAY_BUFFER, 0, v, GL_STATIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, bordercVBO);
+	glBufferData(GL_ARRAY_BUFFER, 0, v, GL_STATIC_DRAW);
+}
+
 void Renderer::draw() {
 
 	// ghostVertexes
@@ -103,8 +139,9 @@ void Renderer::draw() {
 	glBindBuffer(GL_ARRAY_BUFFER, ghostcVBO);
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, (void *)0);
 
-	// draw all ghostTriangles (4 blocks -> 8 triangles -> 48 verticies -> 144)
-	glDrawArrays(GL_TRIANGLES, 0, 144);
+	// draw all ghostTriangles (4 blocks -> 8 triangles -> 24 verticies ->
+	// 72)
+	glDrawArrays(GL_TRIANGLES, 0, 72);
 	glDisableVertexAttribArray(0);
 	glDisableVertexAttribArray(1);
 
@@ -133,8 +170,25 @@ void Renderer::draw() {
 	glBindBuffer(GL_ARRAY_BUFFER, bordercVBO);
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, (void *)0);
 
-	// draw all borderTriangles (10 lines -> 20 vertexes -> 60 data)
+	// draw all borderLines (10 lines -> 20 vertexes -> 60 data)
 	glDrawArrays(GL_LINES, 0, 60);
 	glDisableVertexAttribArray(0);
 	glDisableVertexAttribArray(1);
+
+	if (!noSwap) {
+		// swapVertexes
+		glEnableVertexAttribArray(0); // note 0 is accessed in shaders
+		glBindBuffer(GL_ARRAY_BUFFER, swapvVBO);
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void *)0);
+
+		// swapColors
+		glEnableVertexAttribArray(1); // note 1 is accessed in shaders
+		glBindBuffer(GL_ARRAY_BUFFER, swapcVBO);
+		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, (void *)0);
+
+		// draw all swapTriangles (4 blocks -> 8 triangles -> 24 verticies ->72)
+		glDrawArrays(GL_TRIANGLES, 0, 72);
+		glDisableVertexAttribArray(0);
+		glDisableVertexAttribArray(1);
+	}
 }

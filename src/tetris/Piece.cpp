@@ -65,10 +65,10 @@ RightL::RightL() {
 LeftZ::LeftZ() {
 	id = 6;
 	pos.resize(4);
-	pos[0] = {4, 0};
-	pos[1] = {5, 0};
-	pos[2] = {5, 1};
-	pos[3] = {6, 1};
+	pos[0] = {3, 0};
+	pos[1] = {4, 0};
+	pos[2] = {4, 1};
+	pos[3] = {5, 1};
 }
 
 RightZ::RightZ() {

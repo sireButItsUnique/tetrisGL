@@ -12,6 +12,7 @@ void Renderer::clearGhost() {
 }
 
 void Renderer::renderGhost(Piece *ghostPiece) {
+	noGhost = false;
 
 	// get verticies
 	std::vector<float> ghostVertexes;

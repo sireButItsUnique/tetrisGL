@@ -9,11 +9,10 @@ Game::Game() {
 void Game::genNextPieceSet() {
 
 	// create set with every piece then shuffle
-	std::vector<Piece *> set = {new Square(), new T(),		new Line(),
-								new LeftL(),  new RightL(), new LeftZ(),
-								new RightZ()};
+	std::vector<Piece *> set = {new T(),	  new Line(),  new LeftL(),
+								new RightL(), new LeftZ(), new RightZ()};
 	std::shuffle(set.begin(), set.end(), std::default_random_engine(time(0)));
-	for (int i = 0; i < 7; i++) {
+	for (int i = 0; i < 6; i++) {
 		next.push(set[i]);
 	}
 };
@@ -97,9 +96,7 @@ void Game::pause() {
 
 	// update visuals
 	if (paused) {
-		renderer->clearBlocks();
-		renderer->clearGhost();
-		renderer->render();
+		// renderer->clear();
 	} else {
 		render();
 	}
@@ -389,6 +386,7 @@ void Game::render() {
 
 	renderGhost();
 	renderer->renderBorders();
+	renderer->renderSwap(swapPiece);
 	renderer->render();
 }
 
