@@ -75,6 +75,8 @@ void Game::clearLine(int row) {
 
 void Game::tick() {
 	if (!paused) {
+
+		// tick block
 		auto diff = std::chrono::duration_cast<std::chrono::milliseconds>(
 			std::chrono::high_resolution_clock::now() - lastTick);
 		if (diff.count() >= 1000) {
@@ -190,6 +192,20 @@ void Game::move(int x, int y) {
 
 void Game::swap() {
 	if (!swapped) {
+
+		if (!swapPiece) {
+			std::cout << "triggered";
+			swapPiece = curPiece;
+			curPiece = next.front();
+			next.pop();
+		} else {
+			Piece *buffer = curPiece;
+			curPiece = swapPiece;
+			swapPiece = buffer;
+		}
+
+		// render it
+		render();
 		swapped = true;
 	}
 };
@@ -292,6 +308,24 @@ void Game::getInput(GLFWwindow *window) {
 		spaceDown = false;
 		instaDrop();
 	}
+
+	// SPACE: insta drop
+	if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) {
+		spaceDown = true;
+	}
+	if (spaceDown && glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_RELEASE) {
+		spaceDown = false;
+		instaDrop();
+	}
+
+	// C: swap
+	if (glfwGetKey(window, GLFW_KEY_C) == GLFW_PRESS) {
+		cDown = true;
+	}
+	if (cDown && glfwGetKey(window, GLFW_KEY_C) == GLFW_RELEASE) {
+		cDown = false;
+		swap();
+	}
 }
 
 // VISUAL
@@ -393,6 +427,7 @@ void Game::newGame() {
 		genNextPieceSet();
 	}
 	curPiece = next.front();
+	swapPiece = nullptr;
 	next.pop();
 	this->render();
 }
