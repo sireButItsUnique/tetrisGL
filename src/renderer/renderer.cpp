@@ -93,33 +93,48 @@ void Renderer::render() {
 
 void Renderer::draw() {
 
-	// draw ghost beneath
+	// ghostVertexes
 	glEnableVertexAttribArray(0); // note 0 is accessed in shaders
 	glBindBuffer(GL_ARRAY_BUFFER, ghostvVBO);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void *)0);
 
-	// 2nd attribute buffer : colors
+	// ghostColors
 	glEnableVertexAttribArray(1); // note 1 is accessed in shaders
 	glBindBuffer(GL_ARRAY_BUFFER, ghostcVBO);
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, (void *)0);
 
-	// draw all triangles (4 blocks -> 8 triangles -> 48 verticies -> 144)
+	// draw all ghostTriangles (4 blocks -> 8 triangles -> 48 verticies -> 144)
 	glDrawArrays(GL_TRIANGLES, 0, 144);
 	glDisableVertexAttribArray(0);
 	glDisableVertexAttribArray(1);
 
-	// 1st attribute buffer : vertices
+	// gameVerticies
 	glEnableVertexAttribArray(0); // note 0 is accessed in shaders
 	glBindBuffer(GL_ARRAY_BUFFER, vVBO);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void *)0);
 
-	// 2nd attribute buffer : colors
+	// gameColors
 	glEnableVertexAttribArray(1); // note 1 is accessed in shaders
 	glBindBuffer(GL_ARRAY_BUFFER, cVBO);
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, (void *)0);
 
-	// draw all triangles
+	// draw all gameTriangles
 	glDrawArrays(GL_TRIANGLES, 0, vertexes.size());
+	glDisableVertexAttribArray(0);
+	glDisableVertexAttribArray(1);
+
+	// borderVerticies
+	glEnableVertexAttribArray(0); // note 0 is accessed in shaders
+	glBindBuffer(GL_ARRAY_BUFFER, bordervVBO);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void *)0);
+
+	// borderColors
+	glEnableVertexAttribArray(1); // note 1 is accessed in shaders
+	glBindBuffer(GL_ARRAY_BUFFER, bordercVBO);
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, (void *)0);
+
+	// draw all borderTriangles (10 lines -> 20 vertexes -> 60 data)
+	glDrawArrays(GL_LINES, 0, 60);
 	glDisableVertexAttribArray(0);
 	glDisableVertexAttribArray(1);
 }

@@ -388,6 +388,7 @@ void Game::render() {
 	}
 
 	renderGhost();
+	renderer->renderBorders();
 	renderer->render();
 }
 

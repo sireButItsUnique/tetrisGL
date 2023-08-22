@@ -14,6 +14,10 @@ class Renderer {
 	unsigned int ghostcVBO;
 	unsigned int swapvVBO;
 	unsigned int swapcVBO;
+	unsigned int nextVBO;
+	unsigned int nextcVBO;
+	unsigned int bordervVBO;
+	unsigned int bordercVBO;
 	std::vector<float> vertexes;
 	std::vector<float> colors;
 	GLuint programID;
@@ -30,9 +34,13 @@ class Renderer {
 
 	void clearGhost();
 
+	void clearSwap();
+
 	void renderGhost(Piece *ghostPiece);
 
 	void renderSwap(Piece *swapPiece);
+
+	void renderBorders();
 
 	void render();
 
