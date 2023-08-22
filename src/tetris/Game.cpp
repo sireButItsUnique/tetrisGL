@@ -9,10 +9,11 @@ Game::Game() {
 void Game::genNextPieceSet() {
 
 	// create set with every piece then shuffle
-	std::vector<Piece *> set = {new T(),	  new Line(),  new LeftL(),
-								new RightL(), new LeftZ(), new RightZ()};
+	std::vector<Piece *> set = {new Square(), new T(),		new Line(),
+								new LeftL(),  new RightL(), new LeftZ(),
+								new RightZ()};
 	std::shuffle(set.begin(), set.end(), std::default_random_engine(time(0)));
-	for (int i = 0; i < 6; i++) {
+	for (int i = 0; i < 7; i++) {
 		next.push(set[i]);
 	}
 };

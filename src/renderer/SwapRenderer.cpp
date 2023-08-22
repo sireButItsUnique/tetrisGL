@@ -52,8 +52,44 @@ std::vector<float> generateLinePiece() {
 	return swapVertexes;
 }
 
-std::vector<float> generateSquarePiece(Piece *swapPiece) {
-	return std::vector<float>();
+std::vector<float> generateSquarePiece() {
+	std::vector<float> swapVertexes;
+	// position: -0.85 -> -0.65; 3 cols
+	// wtv -> 0.733; 2 rows
+	float xMult = 0.1;				// 160p
+	float yMult = (1.0 / 6) / 2.0f; // 160p
+	float xAdj = 0.85;
+	float yAdj = 0.65 + (1.0 / 12);
+	for (int x = 0; x < 2; x++) {
+		for (int y = 0; y < 2; y++) {
+			// top left triangle
+			swapVertexes.push_back((x * xMult) - xAdj);
+			swapVertexes.push_back(yAdj - (y * yMult));
+			swapVertexes.push_back(0.0f);
+
+			swapVertexes.push_back(((x + 1) * xMult) - xAdj);
+			swapVertexes.push_back(yAdj - (y * yMult));
+			swapVertexes.push_back(0.0f);
+
+			swapVertexes.push_back((x * xMult) - xAdj);
+			swapVertexes.push_back(yAdj - ((y + 1) * yMult));
+			swapVertexes.push_back(0.0f);
+
+			// bottom right triangle
+			swapVertexes.push_back(((x + 1) * xMult) - xAdj);
+			swapVertexes.push_back(yAdj - ((y + 1) * yMult));
+			swapVertexes.push_back(0.0f);
+
+			swapVertexes.push_back(((x + 1) * xMult) - xAdj);
+			swapVertexes.push_back(yAdj - (y * yMult));
+			swapVertexes.push_back(0.0f);
+
+			swapVertexes.push_back((x * xMult) - xAdj);
+			swapVertexes.push_back(yAdj - ((y + 1) * yMult));
+			swapVertexes.push_back(0.0f);
+		}
+	}
+	return swapVertexes;
 }
 
 void Renderer::renderSwap(Piece *swapPiece) {
@@ -77,7 +113,7 @@ void Renderer::renderSwap(Piece *swapPiece) {
 		swapColors.push_back(colorMap[color][2]);
 	}
 	if (swapPiece->getId() == 1) {
-		// swapVertexes = generateSquarePiece();
+		swapVertexes = generateSquarePiece();
 	} else if (swapPiece->getId() == 3) {
 		swapVertexes = generateLinePiece();
 	} else {
