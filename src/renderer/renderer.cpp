@@ -36,34 +36,35 @@ void Renderer::addBlock(int x, int y, int color) {
 		colors.push_back(colorMap[color][2]);
 	}
 
-	// position: -1 -> 1; 10 by 24
-	float xAdj = 2 / 10.0f;
-	float yAdj = 2 / 24.0f;
+	// position: -0.5 -> 0.5; 10 by 24
+	float xMult = 1 / 10.0f;
+	float yMult = 2 / 24.0f;
+	float xAdj = 0.5;
 
 	// top left triangle
-	vertexes.push_back((x * xAdj) - 1);
-	vertexes.push_back(1 - (y * yAdj));
+	vertexes.push_back((x * xMult) - xAdj);
+	vertexes.push_back(1 - (y * yMult));
 	vertexes.push_back(0.0f);
 
-	vertexes.push_back(((x + 1) * xAdj) - 1);
-	vertexes.push_back(1 - (y * yAdj));
+	vertexes.push_back(((x + 1) * xMult) - xAdj);
+	vertexes.push_back(1 - (y * yMult));
 	vertexes.push_back(0.0f);
 
-	vertexes.push_back((x * xAdj) - 1);
-	vertexes.push_back(1 - ((y + 1) * yAdj));
+	vertexes.push_back((x * xMult) - xAdj);
+	vertexes.push_back(1 - ((y + 1) * yMult));
 	vertexes.push_back(0.0f);
 
 	// bottom right triangle
-	vertexes.push_back(((x + 1) * xAdj) - 1);
-	vertexes.push_back(1 - ((y + 1) * yAdj));
+	vertexes.push_back(((x + 1) * xMult) - xAdj);
+	vertexes.push_back(1 - ((y + 1) * yMult));
 	vertexes.push_back(0.0f);
 
-	vertexes.push_back(((x + 1) * xAdj) - 1);
-	vertexes.push_back(1 - (y * yAdj));
+	vertexes.push_back(((x + 1) * xMult) - xAdj);
+	vertexes.push_back(1 - (y * yMult));
 	vertexes.push_back(0.0f);
 
-	vertexes.push_back((x * xAdj) - 1);
-	vertexes.push_back(1 - ((y + 1) * yAdj));
+	vertexes.push_back((x * xMult) - xAdj);
+	vertexes.push_back(1 - ((y + 1) * yMult));
 	vertexes.push_back(0.0f);
 }
 

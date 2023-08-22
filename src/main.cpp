@@ -19,12 +19,12 @@ int main(void) {
 	glfwInit();
 	GLFWwindow *window;
 	glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
-	window = glfwCreateWindow(400, 960, "TetrisGL", NULL, NULL);
+	window = glfwCreateWindow(800, 960, "TetrisGL", NULL, NULL);
 	glfwMakeContextCurrent(window);
 
 	// init openGL
 	gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
-	glViewport(0, 0, 400, 960);
+	glViewport(0, 0, 800, 960);
 
 	// init game
 	Game *game = new Game();
