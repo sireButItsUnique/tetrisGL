@@ -359,12 +359,7 @@ void Game::renderGhost() {
 
 			// render the ghost
 			shadow->move(0, -1);
-			for (std::pair<int, int> block : shadow->getPos()) {
-				renderer->addGhostBlock(block.first, block.second,
-										shadow->getId());
-			}
-
-			renderer->render();
+			renderer->renderGhost(shadow);
 			return;
 		}
 	}

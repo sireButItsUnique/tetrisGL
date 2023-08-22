@@ -3,7 +3,6 @@
 #include <GLFW/glfw3.h>
 #include <GLFW/glfw3native.h>
 #include <RENDER/Renderer.hpp>
-#include <TETRIS/piece.hpp>
 #include <algorithm>
 #include <chrono>
 #include <iostream>

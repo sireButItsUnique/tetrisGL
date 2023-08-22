@@ -88,15 +88,6 @@ void Renderer::render() {
 	v = &colors[0];
 	glBindBuffer(GL_ARRAY_BUFFER, cVBO);
 	glBufferData(GL_ARRAY_BUFFER, 4 * colors.size(), v, GL_STATIC_DRAW);
-
-	// ghost
-	v = &ghostVertexes[0];
-	glBindBuffer(GL_ARRAY_BUFFER, ghostvVBO);
-	glBufferData(GL_ARRAY_BUFFER, 4 * ghostVertexes.size(), v, GL_STATIC_DRAW);
-
-	v = &ghostColors[0];
-	glBindBuffer(GL_ARRAY_BUFFER, ghostcVBO);
-	glBufferData(GL_ARRAY_BUFFER, 4 * ghostColors.size(), v, GL_STATIC_DRAW);
 }
 
 void Renderer::draw() {
@@ -111,8 +102,8 @@ void Renderer::draw() {
 	glBindBuffer(GL_ARRAY_BUFFER, ghostcVBO);
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, (void *)0);
 
-	// draw all triangles
-	glDrawArrays(GL_TRIANGLES, 0, ghostVertexes.size());
+	// draw all triangles (4 blocks -> 8 triangles -> 48 verticies -> 144)
+	glDrawArrays(GL_TRIANGLES, 0, 144);
 	glDisableVertexAttribArray(0);
 	glDisableVertexAttribArray(1);
 
