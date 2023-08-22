@@ -3,6 +3,7 @@
 #include <GLFW/glfw3native.h>
 #include <TETRIS/piece.hpp>
 #include <UTIL/LoadShaders.h>
+#include <deque>
 #include <iostream>
 #include <vector>
 
@@ -14,7 +15,7 @@ class Renderer {
 	unsigned int ghostcVBO;
 	unsigned int swapvVBO;
 	unsigned int swapcVBO;
-	unsigned int nextVBO;
+	unsigned int nextvVBO;
 	unsigned int nextcVBO;
 	unsigned int bordervVBO;
 	unsigned int bordercVBO;
@@ -42,6 +43,8 @@ class Renderer {
 	void renderGhost(Piece *ghostPiece);
 
 	void renderSwap(Piece *swapPiece);
+
+	void renderNext(std::deque<Piece *> next);
 
 	void renderBorders();
 

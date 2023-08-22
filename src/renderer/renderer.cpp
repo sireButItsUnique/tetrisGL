@@ -191,4 +191,19 @@ void Renderer::draw() {
 		glDisableVertexAttribArray(0);
 		glDisableVertexAttribArray(1);
 	}
+
+	// nextVertexes
+	glEnableVertexAttribArray(0); // note 0 is accessed in shaders
+	glBindBuffer(GL_ARRAY_BUFFER, nextvVBO);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void *)0);
+
+	// nextColors
+	glEnableVertexAttribArray(1); // note 1 is accessed in shaders
+	glBindBuffer(GL_ARRAY_BUFFER, nextcVBO);
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, (void *)0);
+
+	// draw all nextTriangles 4(4 blocks -> 8 triangles -> 24 verticies ->72)
+	glDrawArrays(GL_TRIANGLES, 0, 216);
+	glDisableVertexAttribArray(0);
+	glDisableVertexAttribArray(1);
 }

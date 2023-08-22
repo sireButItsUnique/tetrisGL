@@ -14,7 +14,7 @@ void Game::genNextPieceSet() {
 								new RightZ()};
 	std::shuffle(set.begin(), set.end(), std::default_random_engine(time(0)));
 	for (int i = 0; i < 7; i++) {
-		next.push(set[i]);
+		next.push_back(set[i]);
 	}
 };
 
@@ -47,7 +47,7 @@ void Game::place() {
 
 	// rmv cur block + replace with next
 	curPiece = next.front();
-	next.pop();
+	next.pop_front();
 	if (next.size() <= 7) {
 		genNextPieceSet();
 	}
@@ -60,7 +60,6 @@ void Game::place() {
 		renderer->addBlock(block.first, block.second, curPiece->getId());
 	}
 
-	renderGhost();
 	render();
 }
 
@@ -195,7 +194,7 @@ void Game::swap() {
 			std::cout << "triggered";
 			swapPiece = curPiece;
 			curPiece = next.front();
-			next.pop();
+			next.pop_front();
 		} else {
 			Piece *buffer = curPiece;
 			curPiece = swapPiece;
@@ -234,18 +233,8 @@ void Game::instaDrop() {
 
 		// has collided -> render the placed piece at its new pos
 		if (collided) {
+
 			// render the move
-			for (int i = 0; i < 4; i++) {
-				renderer->rmvLastBlock();
-			}
-
-			// add cur block
-			for (std::pair<int, int> block : curPiece->getPos()) {
-				renderer->addBlock(block.first, block.second,
-								   curPiece->getId());
-			}
-
-			renderer->render();
 			place();
 			return;
 		}
@@ -387,6 +376,7 @@ void Game::render() {
 
 	renderGhost();
 	renderer->renderBorders();
+	renderer->renderNext(next);
 	renderer->renderSwap(swapPiece);
 	renderer->render();
 }
@@ -421,11 +411,9 @@ void Game::newGame() {
 	spaceDown = false;
 
 	// init some pieces
-	for (int i = 0; i < 4; i++) {
-		genNextPieceSet();
-	}
+	genNextPieceSet();
 	curPiece = next.front();
 	swapPiece = nullptr;
-	next.pop();
+	next.pop_front();
 	this->render();
 }

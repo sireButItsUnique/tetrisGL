@@ -5,6 +5,7 @@
 #include <RENDER/Renderer.hpp>
 #include <algorithm>
 #include <chrono>
+#include <deque>
 #include <iostream>
 #include <queue>
 #include <random>
@@ -16,7 +17,7 @@ class Game {
 	std::vector<std::vector<int>> placed;
 	Piece *curPiece;
 	Piece *swapPiece;
-	std::queue<Piece *> next;
+	std::deque<Piece *> next;
 	std::chrono::high_resolution_clock::time_point lastTick;
 
 	bool swapped;
