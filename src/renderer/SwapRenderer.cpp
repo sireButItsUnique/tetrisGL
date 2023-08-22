@@ -16,11 +16,11 @@ std::vector<float> generateLinePiece() {
 	for (int x = 0; x < 4; x++) {
 
 		// position: -0.9 -> -0.6; 4 cols
-		// 0.6125 -> 0.6875; 1 row
-		float xMult = 0.3 / 4.0f;
-		float yMult = 0.075;
+		// wtv -> 0.6875; 1 row
+		float xMult = 0.3 / 4.0f; // 0.3 = 240p
+		float yMult = 0.0625;	  // x = 60p
 		float xAdj = 0.9;
-		float yAdj = 0.6875;
+		float yAdj = 0.68125;
 		int y = 0;
 
 		// top left triangle
@@ -84,11 +84,11 @@ void Renderer::renderSwap(Piece *swapPiece) {
 		for (std::pair<int, int> block : swapPiece->getPos()) {
 
 			// position: -0.9 -> -0.6; 3 cols
-			// 0.55 -> 0.75; 2 rows
-			float xMult = 0.3 / 3.0f;
-			float yMult = 0.2 / 2.0f;
+			// wtv -> 0.733; 2 rows
+			float xMult = 0.3 / 3.0f;		// 240p
+			float yMult = (1.0 / 6) / 2.0f; // 160p
 			float xAdj = 0.9;
-			float yAdj = 0.75;
+			float yAdj = 0.65 + (1.0 / 12);
 			int x = block.first - 3;
 			int y = block.second;
 
